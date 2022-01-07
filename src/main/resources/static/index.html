@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AlfaTest</title>
+</head>
+<body>
+
+<form>
+    <div>
+        <select class="currencies" id="currencies">
+        </select>
+    </div>
+    <div class="result"></div>
+</form>
+
+<img class="gif" src=""/>
+<script>
+  var selectElement = document.querySelector('.currencies');
+  selectElement.addEventListener('change', (event) => {
+    // get selected value
+    const result = document.querySelector('.result');
+    result.textContent = `You like ${event.target.value}`;
+
+
+    // request
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", `/getGif?symbols=${event.target.value}`, false); // false for synchronous request
+    xmlHttp.send();
+    var image = document.querySelector('.gif');
+    image.src = xmlHttp.responseText;
+
+
+  });
+
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open( "GET", "https://openexchangerates.org/api/currencies.json", false); // false for synchronous request
+  xmlHttp.send( null );
+  obj = JSON.parse(xmlHttp.responseText);
+  html = "";
+
+  for(var key in obj) {
+    html += "<option value=" + key  + ">" +obj[key] + "</option>"
+  }
+  var selectList = document.getElementById("currencies").innerHTML = html;
+  selectList.options[33].selected = true;
+</script>
+</body>
+</html>
